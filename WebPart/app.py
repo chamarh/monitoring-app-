@@ -44,12 +44,29 @@ def logout():
     return redirect("/login")    ## apres suppression de la session , on redirige vers page de login pour inserer a nouveau lemail et passwd
 #################################################
 
-
-
-
 @app.route('/home',methods=['GET','POST'])
 def home():
     if g.username :
        return render_template("homepage.html",username=session['username'])
     return redirect("/login")
+################################################
+srv =["supervise1", "supervise2", "supervise3", "manage1", "manage2", "manage3"]
+
+@app.route('/home/<supervise>', methods=['GET'])
+def supervise(supervise):
+    if str(supervise) in srv and g.username:
+        s = str(supervise) + '.html'
+        return render_template(s, username=session['username'])
+    return "<h1>Not Found</h1>   The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again."
+################################################
+
+action = ['Actif-users-srv1', 'Actif-users-srv2', 'Actif-users-srv1', 'Hard-drive-usage-srv1', 'Hard-drive-usage-srv2', 'Hard-drive-usage-srv3', 'Ram-usage-srv1', 'Ram-usage-srv2', 'Ram-usage-srv3']
+
+@app.route('/home/<supervise>/<action>', methods=['GET'])
+def action(supervise, action):
+    if str(supervise) in srv and g.username and str(action) in action:
+        s = str(action) + '.html'
+        return render_template(s, username=session['username'])
+    return "<h1>Not Found</h1>   The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again."
+
 ################################################
